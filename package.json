@@ -1,0 +1,25 @@
+{
+  "name": "respy",
+  "version": "0.0.1",
+  "description": "simple REST template engine for nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodejs index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fritzprix/respy.git"
+  },
+  "keywords": [
+    "REST",
+    "response",
+    "template",
+    "respy"
+  ],
+  "author": "fritzprix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fritzprix/respy/issues"
+  },
+  "homepage": "https://github.com/fritzprix/respy#readme"
+}
