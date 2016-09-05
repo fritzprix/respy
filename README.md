@@ -70,3 +70,24 @@ var UserData = {
 var respy = require('respy');
 respy(200, UserData).render(res, UserTemplate.GetUserResponse);
 ```
+> the snippet above will generate response like below
+```json
+{
+    "code": 200,
+    "message": "Success",
+    "success": true,
+    "data": {
+      "loginId": "respy",
+      "lastname": "prix",
+      "firstname": "fritz",
+      "email" : "fritzprix@mailinator.com",
+      "gender": "male",
+      "location": {
+        "latitude": 32.4342,
+        "longitude": 32.4233
+      }
+    }
+}
+```
+> you can see the field not defined in template is removed from response
+ 
