@@ -15,8 +15,8 @@ npm install respy --save
 > you can easily define response template like below. let say the template is defined 
  as UserTemplate.js for example.
 ```javascript
-var respy = require('respy');
 
+var respy = require('respy');
 var Geolocation = respy.Template({
     latitude: {
         type: Number
@@ -25,7 +25,6 @@ var Geolocation = respy.Template({
         type: Number
     }
 });
-
 var GetUserResponse = respy.Template({
     loginId : {
         type: String
@@ -47,8 +46,8 @@ var GetUserResponse = respy.Template({
         type: Geolocation
     }
 });
-
 module.exports.GetUserResponse = GetUserResponse;
+
 ```
 
 #### Render Data object into REST API response    
@@ -70,11 +69,13 @@ var UserData = {
 };
 var respy = require('respy');
 respy(200, UserData).render(res, UserTemplate.GetUserResponse);
+
 ```
 
 > the snippet above will generate response like below    
 
 ```json
+
 {
     "code": 200,
     "message": "Success",
@@ -91,6 +92,8 @@ respy(200, UserData).render(res, UserTemplate.GetUserResponse);
       }
     }
 }
-```
+
+```  
+
 > you can see the field not defined in template is removed from response
  
