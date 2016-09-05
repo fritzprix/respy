@@ -13,10 +13,12 @@ npm install respy --save
 ### How to Use
 #### Define template
 > you can easily define response template like below. let say the template is defined 
- as UserTemplate.js for example.
-```javascript
+ as UserTemplate.js for example.   
 
+   
+```javascript
 var respy = require('respy');
+
 var Geolocation = respy.Template({
     latitude: {
         type: Number
@@ -25,6 +27,7 @@ var Geolocation = respy.Template({
         type: Number
     }
 });
+
 var GetUserResponse = respy.Template({
     loginId : {
         type: String
@@ -46,11 +49,13 @@ var GetUserResponse = respy.Template({
         type: Geolocation
     }
 });
+
 module.exports.GetUserResponse = GetUserResponse;
+
 
 ```
 
-#### Render Data object into REST API response    
+#### Render Data object into REST API response      
 
 ```javascript
 
