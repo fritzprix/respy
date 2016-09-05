@@ -7,12 +7,15 @@ function Template(schema, strict){
 
     var valiate = function(_this, object) {
         if(!(_this instanceof _Template)) {
-            throw Exception('Invalid Template');
+            throw new Error('Invalid Template');
         }
         var schema = _this.schema;
         for(var key in schema) {
             if(!(key in object)) {
-                if(schema[key].default) {
+                if(_this.strict) {
+                    throw new Error('key \'' + key + '\' is not found in strict mode');
+                }
+                else if(schema[key].default) {
                     _this[key] = schema[key].default;
                 } else if(schema[key].required){
                     throw new Error(key + ' is not avaiable');
@@ -38,7 +41,7 @@ function Template(schema, strict){
         this.validate(this, object);
     }
 
-    _Template.strict = strict;
+    _Template.prototype.strict = strict;
 
     _Template.prototype.schema = schema;
 
@@ -51,8 +54,8 @@ function Template(schema, strict){
 function Response(code, data, message) {
     var _code = code || 200;
     var _message = message || ResponseCode[code].message;
-    var _data = data;
-    var _this = this;
+    var _data = data || {};
+    var _success = ResponseCode[code].success;
 
     var render = function(res, template) {
         res.header({'Content-Type':'application/json'});
@@ -60,6 +63,7 @@ function Response(code, data, message) {
         var resobj = {};
         resobj.code = _code;
         resobj.message = _message;
+        resobj.success = _success;
         if(_data) {
             resobj.data = _data;
             if(template) {
@@ -67,32 +71,31 @@ function Response(code, data, message) {
             }
         }
         if(code == 200) {
-            res.end(JSON.stringify(resobj.data));
+            res.end(JSON.stringify(resobj));
         } else {
             res.end(JSON.stringify(resobj));
         }
-        return _this;
     };
     return {render: render}
 }
 
 
 var ResponseCode = {
-    200: {code: 200, message:'Success'},
-    201: {code: 201, message:'Created'},
-    202: {code: 202, message:'Accepted'},
-    203: {code: 204, message:'No Content'},
-    400: {code: 400, message:'Bad Request'},
-    401: {code: 401, message:'Unauthorized'},
-    403: {code: 403, message:'Forbidden'},
-    404: {code: 404, message:'Not Found'},
-    405: {code: 405, message:'Method Not Allowed'},
-    408: {code: 408, message:'Request Timeout'},
-    409: {code: 409, message:'Conflict'},
-    500: {code: 500, message:'Internal Server Error'},
-    501: {code: 501, message:'Not Implemented'},
-    502: {code: 502, message:'Bad Gateway'},
-    503: {code: 503, message:'Service Unavailable'}
+    200: {code: 200, message:'Success', success: true},
+    201: {code: 201, message:'Created', success: true},
+    202: {code: 202, message:'Accepted', success: true},
+    203: {code: 204, message:'No Content', success: true},
+    400: {code: 400, message:'Bad Request', success: false},
+    401: {code: 401, message:'Unauthorized', success: false},
+    403: {code: 403, message:'Forbidden', success: false},
+    404: {code: 404, message:'Not Found', success: false},
+    405: {code: 405, message:'Method Not Allowed', success: false},
+    408: {code: 408, message:'Request Timeout', success: false},
+    409: {code: 409, message:'Conflict', success: false},
+    500: {code: 500, message:'Internal Server Error', success: false},
+    501: {code: 501, message:'Not Implemented', success: false},
+    502: {code: 502, message:'Bad Gateway', success: false},
+    503: {code: 503, message:'Service Unavailable', success: false}
 };
 
 module.exports = Response;
