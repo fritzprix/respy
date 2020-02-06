@@ -1,6 +1,6 @@
 {
   "name": "respy",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "simple REST template engine for nodejs",
   "main": "index.js",
   "scripts": {
