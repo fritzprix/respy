@@ -1,6 +1,6 @@
 {
   "name": "respy",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "simple REST template engine for nodejs",
   "main": "index.js",
   "scripts": {
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/fritzprix/respy/issues"
   },
-  "homepage": "https://github.com/fritzprix/respy#readme"
+  "homepage": "https://github.com/fritzprix/respy#readme",
+  "devDependencies": {
+    "mocha": "^7.0.1"
+  }
 }
