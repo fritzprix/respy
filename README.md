@@ -1,21 +1,26 @@
-## respy 
-### About 
-> **respy** is simple template engine to standardize REST API response. it provides 
-elegant way to manage response model as template separated from the service logic and 
-type-safety for response. typically useful convert the data object into response object 
-that have similar model from each other.
+# respy
 
-### Install 
+## About
+
+> **respy** is simple template engine to standardize REST API response. it provides elegant way to decouple database model to response data model.
+
+## Usecase Example
+
+> Generally database model has additional fields than required to build response and there are two cases in consideration. the first case, the fields used internally by database or database client (e.g. __v or __id field by MongoDB and Mongoose) and the second, the fields should be hidden to the client because it's too verbose and only occupying I/O bandwidth or sensitive to show to the REST clients. Of couse, there are many other ways (like using proper selection in database query or deleting unrequired item directly) to deal with these situations though, they typically generate a lot of boiler plate and error prone.
+
+## Install
+
 ```shell
 npm install respy --save
 ```
 
-### How to Use
-#### Define template
-> you can easily define response template like below. let say the template is defined 
- as UserTemplate.js for example.   
+## How to Use
 
-   
+### Declare template (basic)
+
+> you can easily define response template like below. let say the template is defined
+ as UserTemplate.js for example.
+
 ```javascript
 var respy = require('respy');
 
@@ -50,21 +55,47 @@ var GetUserResponse = respy.Template({
     }
 });
 
-module.exports.GetUserResponse = GetUserResponse;
-
-
 ```
 
-#### Render Data object into REST API response      
+### Declare template (recursive templating)
 
 ```javascript
+var Geolocation = respy.Template({
+    latitude: {
+        type: Number
+    },
+    longitude: {
+        type: Number
+    }
+});
 
-var UserTemplate = require('./UserTemplate');
+Var User = respy.Template({
+    age : {
+        type: Number
+    },
+    name: {
+        type: String
+    },
+    locations : {
+        type: [Geolocation] /// array of geolocation object
+    }
+});
+```
+
+#### 1.Render single object into REST API response
+
+```javascript
+var respy = require('respy');
+// mongo document found
 var UserData = {
+        __id : 'dcbadcbadcbadcbadcba'   // should be excluded from response body
+        __v : 'abcdabcdabcdabcdabcd'    // should be excluded from response body
         loginId : 'respy',
         lastname: 'prix',
         firstname: 'fritz',
         email: 'fritzprix@mailinator.com',
+        password: 'abcdefg1234',
+        age:32,                         // let say this information is very sensitive privacy, so should not included to response body
         gender: 'male',
         location: {
             latitude: 32.4242,
@@ -72,12 +103,12 @@ var UserData = {
         },
         hash: 'ef9ek3mfi9fkeoi'
 };
-var respy = require('respy');
+
 respy(200, UserData).render(res, UserTemplate.GetUserResponse);
 
 ```
 
-> the snippet above will generate response like below    
+> the snippet above will generate response like below, you see the fields not required is dropped.
 
 ```json
 
@@ -100,5 +131,8 @@ respy(200, UserData).render(res, UserTemplate.GetUserResponse);
 
 ```  
 
-> you can see the field not defined in template is removed from response
- 
+#### 2.Render array of data into REST API response
+
+```javascript
+respy(200, UserData).render(res, [UserTemplate.GetUserResponse]);
+```

@@ -21,15 +21,12 @@ function Template(schema, strict) {
                     throw new Error(key + ' is not avaiable');
                 }
             } else if (object[key] != undefined) {
-                if (schema[key].type == Array) {
-                    // if type is array validate
-                    _this[key] = new schema[key].type();
-                    if (object[key] != undefined) {
-                        for (var index = 0; index < object[key].length; index++) {
-                            _this[key].push(new schema[key].item(object[key][index]));
-                        }
+                if (Array.isArray(schema[key].type)) {
+                    if (Array.isArray(object[key])) {
+                        _this[key] = object[key].map(x => new schema[key].type[0](x));
+                    } else {
+                        throw new Error(key + 'is should be array');
                     }
-
                 } else {
                     _this[key] = new schema[key].type(object[key]);
                 }
@@ -69,7 +66,6 @@ function Response(code, data, message) {
             if (template) {
                 if (Array.isArray(template)) {
                     // array template 
-                    console.log("template has length ", template.length);
                     if (Array.isArray(_data)) {
                         resobj.data = _data.map(x => new template[0](x));
                     } else {

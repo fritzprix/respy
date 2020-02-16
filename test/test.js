@@ -24,12 +24,40 @@ function Response() {
         to_string
     };
 }
+
+const Person = respy.Template({
+    name: {
+        type: String
+    },
+    age: {
+        type: Number
+    }
+});
+
+const Position = respy.Template({
+    x: {
+        type: Number
+    },
+    y: {
+        type: Number
+    }
+});
+
 const TestTemplate = respy.Template({
     id: {
         type: Number
     },
+    me: {
+        type: Person
+    },
     name: {
         type: String
+    },
+    positions: {
+        type: [Position]
+    },
+    adj_nodes: {
+        type: [Number]
     }
 });
 
@@ -37,23 +65,99 @@ const TestDataDoc = [
     {
         _id: 1,
         id: 1,
-        name: 'a'
+        me: {
+            name: 'david',
+            age: 32
+        },
+        name: 'a',
+        positions: [
+            {
+                x: 1,
+                y: 2
+            },
+            {
+                x: 1,
+                y: 2
+            }
+        ],
+        adj_nodes: [
+            1,
+            2,
+            3
+        ]
     },
     {
         _id: 1,
         id: 2,
-        name: 'b'
+        me: {
+            name: 'david',
+            age: 32
+        },
+        name: 'b',
+        positions: [
+            {
+                x: 1,
+                y: 2
+            },
+            {
+                x: 1,
+                y: 2
+            }
+        ],
+        adj_nodes: [
+            1,
+            2,
+            3
+        ]
     }
 ];
 
 const TestData = [
     {
         id: 1,
-        name: 'a'
+        name: 'a',
+        me: {
+            name: 'david',
+            age: 32
+        },
+        positions: [
+            {
+                x: 1,
+                y: 2
+            },
+            {
+                x: 1,
+                y: 2
+            }
+        ],
+        adj_nodes: [
+            1,
+            2,
+            3
+        ]
     },
     {
         id: 2,
-        name: 'b'
+        name: 'b',
+        me: {
+            name: 'david',
+            age: 32
+        },
+        positions: [
+            {
+                x: 1,
+                y: 2
+            },
+            {
+                x: 1,
+                y: 2
+            }
+        ],
+        adj_nodes: [
+            1,
+            2,
+            3
+        ]
     }
 ];
 
@@ -64,7 +168,9 @@ describe('Respy', function () {
         var res = Response();
         it('should generate list of stripped out response object', function () {
             respy(200, TestDataDoc).render(res, [TestTemplate]);
-            assert.equal(JSON.parse(res.to_string()).data[0]._id, undefined);
+            let parsed = JSON.parse(res.to_string());
+            assert.equal(parsed.data[0]._id, undefined);
+            assert.equal(parsed.data[0].positions[0].x, 1);
         });
     });
 });
