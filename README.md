@@ -1,5 +1,5 @@
 # respy [resəˌpē]
-
+[![npm version](https://badge.fury.io/js/respy.svg)](https://badge.fury.io/js/respy)
 ## About
 
 > **respy** is simple template engine to standardize REST API response. it provides elegant way to decouple database model to response data model.
