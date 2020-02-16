@@ -20,15 +20,27 @@ function Template(schema, strict) {
                 } else if (schema[key].required) {
                     throw new Error(key + ' is not avaiable');
                 }
-            } else if (object[key] != undefined) {
-                if (Array.isArray(schema[key].type)) {
-                    if (Array.isArray(object[key])) {
-                        _this[key] = object[key].map(x => new schema[key].type[0](x));
+            } else if (object[key] !== undefined) {
+                if (schema[key].type == undefined) {
+                    if (Array.isArray(schema[key])) {
+                        if (Array.isArray(object[key])) {
+                            _this[key] = object[key].map(x => new schema[key][0](x));
+                        } else {
+                            throw new Error(key + 'is should be array');
+                        }
                     } else {
-                        throw new Error(key + 'is should be array');
+                        _this[key] = new schema[key](object[key]);
                     }
                 } else {
-                    _this[key] = new schema[key].type(object[key]);
+                    if (Array.isArray(schema[key].type)) {
+                        if (Array.isArray(object[key])) {
+                            _this[key] = object[key].map(x => new schema[key].type[0](x));
+                        } else {
+                            throw new Error(key + 'is should be array');
+                        }
+                    } else {
+                        _this[key] = new schema[key].type(object[key]);
+                    }
                 }
             }
         }

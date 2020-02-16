@@ -34,6 +34,8 @@ const Person = respy.Template({
     }
 });
 
+
+
 const Position = respy.Template({
     x: {
         type: Number
@@ -191,6 +193,44 @@ describe('Respy', function () {
         it('should generate ', function () {
             respy(200).render(res);
             assert.equal(JSON.stringify(JSON.parse(res.to_string()).data), '{}');
+        });
+    });
+});
+
+const SimplePerson = respy.Template({
+    name: String,
+    age: Number,
+    location: [Position]
+});
+
+const SimpleUser = {
+    name: 'david',
+    age: 1,
+    location: [
+        { x: 1, y: 2 },
+        { x: 2, y: 4 }
+    ]
+}
+
+
+const SimpleUserDoc = {
+    __v: 'abcddcbaabcddcba',
+    __id: 'abcddcbaabcddcbaabcddcba',
+    name: 'david',
+    age: 1,
+    location: [
+        { x: 1, y: 2 },
+        { x: 2, y: 4 }
+    ]
+}
+
+
+describe('Respy', function () {
+    describe('#render(response, SimplyfiedTemplate)', function () {
+        var res = Response();
+        it('should generate ', function () {
+            respy(200, SimpleUserDoc).render(res, SimplePerson);
+            assert.equal(JSON.stringify(JSON.parse(res.to_string()).data), JSON.stringify(SimpleUser));
         });
     });
 });
