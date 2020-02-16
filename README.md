@@ -1,4 +1,4 @@
-# respy
+# respy [resəˌpē]
 
 ## About
 
@@ -6,7 +6,7 @@
 
 ## Usecase Example
 
-> Generally database model has additional fields than required to build response and there are two cases in consideration. the first case, the fields used internally by database or database client (e.g. __v or __id field by MongoDB and Mongoose) and the second, the fields should be hidden to the client because it's too verbose and only occupying I/O bandwidth or sensitive to show to the REST clients. Of couse, there are many other ways (like using proper selection in database query or deleting unrequired item directly) to deal with these situations though, they typically generate a lot of boiler plate and error prone.
+> Generally database model has additional fields than required from REST client and there are two cases in consideration. the first case, the fields used internally by database or database client (e.g. __v or __id field by MongoDB and Mongoose) and the second, the fields should be hidden to the client because it's too verbose and only occupying I/O bandwidth or sensitive to show to the REST clients. Of course, there are many other ways (like using proper selection in database query or deleting unrequired item directly) to deal with these situations though, they typically generate a lot of boilerplate and error prone.
 
 ## Install
 
