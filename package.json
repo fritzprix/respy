@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/fritzprix/respy#readme",
   "devDependencies": {
-    "mocha": "^7.0.1"
+    "mocha": "^10.2.0"
   }
 }
